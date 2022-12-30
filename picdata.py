@@ -5,8 +5,8 @@ import numpy as np
 
 #請點擊右上角朝右三角形的下拉式選單，並選擇run python file，如果出問題請勿亂改並詢問鹹魚
 
-
-img = cv2.imread("picdata.png")
+#紅色改成圖片絕對路徑
+img = cv2.imread(r"C:\Users\USER\Desktop\統計\Training-AAV5-EE-AMPH-02-img08490.png")
 
 
 def on_EVENT_LBUTTONDOWN(event, x, y, flags, param):
@@ -33,3 +33,4 @@ while(True):
         
 cv2.waitKey(0)
 cv2.destroyAllWindow()
+
