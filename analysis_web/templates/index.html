@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Processing</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OPF統計web端.鹹魚哭泣版</title>
+  </head>
+  <body>
     <form id="path-form">
-        <label for="image_path">Image path:</label>
-        <input type="text" id="image_path" name="image_path" required><br><br>
-        <label for="folder_path">Folder path:</label>
-        <input type="text" id="folder_path" name="folder_path" required><br><br>
-        <button type="submit">Submit</button>
+      <label for="image_path">圖片路徑的啦:</label>
+      <input
+        type="text"
+        id="image_path"
+        name="image_path"
+        required
+      /><br /><br />
+      <label for="folder_path">文件路徑的啦:</label>
+      <input
+        type="text"
+        id="folder_path"
+        name="folder_path"
+        required
+      /><br /><br />
+      <button type="submit">我確定的啦</button>
     </form>
     <div id="results"></div>
     <script>
-        document.getElementById('path-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const image_path = document.getElementById('image_path').value;
-            const folder_path = document.getElementById('folder_path').value;
+      document
+        .getElementById("path-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const image_path = document.getElementById("image_path").value;
+          const folder_path = document.getElementById("folder_path").value;
 
-            const response = await fetch('/open_image', {
-                method: 'POST',
-                body: new FormData(event.target)
-            });
+          const response = await fetch("/open_image", {
+            method: "POST",
+            body: new FormData(event.target),
+          });
 
-            const result = await response.json();
-            const rectangle_points = result.rectangle_points.join(',');
+          const result = await response.json();
+          const rectangle_points = result.rectangle_points.join(",");
 
-            const distance = prompt('Enter the real distance:');
-
-            // Send the data to the '/process' route
-            // Modify the request according to the new requirements
+          const distance = prompt("Enter the real distance:");
         });
     </script>
-</body>
+  </body>
 </html>

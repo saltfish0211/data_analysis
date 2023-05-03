@@ -1,9 +1,40 @@
+from flask import Flask, render_template, request, jsonify
 import os
 import cv2
 import pandas as pd
-from flask import Flask, render_template, request, jsonify
+import glob
 
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/open_image', methods=['POST'])
+def open_image():
+    image_path = request.form.get('image_path')
+    img = cv2.imread(image_path)
+    img = cv2.resize(img, (960, 540))
+
+    rectangle_points = []
+
+    def on_mouse(event, x, y, flags, param):
+        if event == cv2.EVENT_LBUTTONDOWN:
+            cv2.circle(img, (x, y), 5, (0, 255, 0), -1)
+            rectangle_points.append((x, y))
+
+    cv2.namedWindow('Image')
+    cv2.setMouseCallback('Image', on_mouse)
+
+    while True:
+        cv2.imshow('Image', img)
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == 13 or len(rectangle_points) == 4:
+            break
+
+    cv2.destroyAllWindows()
+    return jsonify({'rectangle_points': rectangle_points})
 
 # Step 1
 def get_scale_factor(image_path):
@@ -96,10 +127,6 @@ def calculate_time_inside_rectangle(data, rectangle_points):
             time_inside += 1
 
     return time_inside / 30  # 每30個id為1秒
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/process', methods=['POST'])
 def process():
