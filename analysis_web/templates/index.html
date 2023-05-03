@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,29 +7,32 @@
     <title>Image Processing</title>
 </head>
 <body>
-    <form id="image-form">
+    <form id="path-form">
         <label for="image_path">Image path:</label>
         <input type="text" id="image_path" name="image_path" required><br><br>
         <label for="folder_path">Folder path:</label>
         <input type="text" id="folder_path" name="folder_path" required><br><br>
-        <label for="rectangle_points">Rectangle points (x1,y1,x2,y2,x3,y3,x4,y4):</label>
-        <input type="text" id="rectangle_points" name="rectangle_points" required><br><br>
         <button type="submit">Submit</button>
     </form>
     <div id="results"></div>
     <script>
-        document.getElementById('image-form').addEventListener('submit', async function(event) {
+        document.getElementById('path-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const formData = new FormData(event.target);
-            const response = await fetch('/process', {
+            const image_path = document.getElementById('image_path').value;
+            const folder_path = document.getElementById('folder_path').value;
+
+            const response = await fetch('/open_image', {
                 method: 'POST',
-                body: formData
+                body: new FormData(event.target)
             });
+
             const result = await response.json();
-            document.getElementById('results').innerHTML = `
-                Movements: ${result.movements}<br>
-                Time inside rectangle: ${result.time_inside}
-            `;
+            const rectangle_points = result.rectangle_points.join(',');
+
+            const distance = prompt('Enter the real distance:');
+
+            // Send the data to the '/process' route
+            // Modify the request according to the new requirements
         });
     </script>
 </body>
