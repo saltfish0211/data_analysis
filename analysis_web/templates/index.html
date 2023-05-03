@@ -1,0 +1,37 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+</head>
+<body>
+    <form id="image-form">
+        <label for="image_path">Image path:</label>
+        <input type="text" id="image_path" name="image_path" required><br><br>
+        <label for="folder_path">Folder path:</label>
+        <input type="text" id="folder_path" name="folder_path" required><br><br>
+        <label for="rectangle_points">Rectangle points (x1,y1,x2,y2,x3,y3,x4,y4):</label>
+        <input type="text" id="rectangle_points" name="rectangle_points" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="results"></div>
+    <script>
+        document.getElementById('image-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            document.getElementById('results').innerHTML = `
+                Movements: ${result.movements}<br>
+                Time inside rectangle: ${result.time_inside}
+            `;
+        });
+    </script>
+</body>
+</html>
